@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contract-management-system"
+version = "0.1.0"
+description = "Enterprise Contract Lifecycle Management with AI Clause Analysis and Expiration Tracking"
+readme = "README.md"
+authors = [{ name = "flyfireZero", email = "zerocode004@gmail.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+web = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+    "pydantic>=2.0.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+contractctl = "contract_management.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["contract_management*"]

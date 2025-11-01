@@ -1,0 +1,6 @@
+# Core requirements
+# Standard library is prioritized for zero-dependency portability
+# Optional extensions:
+# fastapi>=0.100.0
+# uvicorn>=0.22.0
+# pydantic>=2.0.0
