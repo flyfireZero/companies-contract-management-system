@@ -1,0 +1,10 @@
+VENDOR TERMS AND CONDITIONS
+
+Article 1. Limitation of Liability
+Customer agrees that Vendor shall have zero liability for any interruptions. In all events, Vendor's liability is capped at $50, whereas Customer agrees to unlimited liability for any claims or disputes under this agreement.
+
+Article 2. Indemnification
+Customer shall indemnify, defend and hold harmless Vendor from any and all claims, damages, and legal costs arising from use of the platform. Vendor provides no indemnity whatsoever to Customer.
+
+Article 3. Termination
+Vendor may terminate this contract at any time in its sole discretion without notice and without refund.
