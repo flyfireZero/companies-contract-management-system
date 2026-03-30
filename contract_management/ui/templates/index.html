@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexiContract AI - Enterprise Contract Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-9 w-9 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-lg text-white shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-file-contract"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">LexiContract AI</span>
+                    <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 font-medium ml-2">Enterprise CLM</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-xs text-slate-400"><i class="fa-solid fa-database mr-1"></i> SQLite Online</span>
+                <span class="text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+                    AI Engine Active
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Top Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Total Contract Value</div>
+                <div class="text-2xl font-bold text-white mb-2">${total_value}</div>
+                <div class="text-xs text-emerald-400 flex items-center"><i class="fa-solid fa-arrow-trend-up mr-1"></i> Active portfolio portfolio exposure</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Annual Recurring Spend</div>
+                <div class="text-2xl font-bold text-white mb-2">${annual_spend}</div>
+                <div class="text-xs text-indigo-400 flex items-center"><i class="fa-solid fa-clock mr-1"></i> Continuous commitments</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Managed Contracts</div>
+                <div class="text-2xl font-bold text-white mb-2">${total_contracts}</div>
+                <div class="text-xs text-slate-400">${active_contracts} active in execution</div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Expiring / Critical</div>
+                <div class="text-2xl font-bold text-amber-400 mb-2">${alerts_count}</div>
+                <div class="text-xs text-amber-400/80 flex items-center"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Impending deadlines</div>
+            </div>
+        </div>
+
+        <!-- Two Column Layout: Expiry Alert Radar & Risk Distribution -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <!-- Left 2 Cols: Contract Table -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+                    <h2 class="font-semibold text-white text-base flex items-center">
+                        <i class="fa-solid fa-folder-open text-indigo-400 mr-2.5"></i> Contract Portfolio
+                    </h2>
+                    <span class="text-xs text-slate-400">${total_contracts} agreements</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-950/60 text-xs text-slate-400 uppercase border-b border-slate-800">
+                            <tr>
+                                <th class="px-6 py-3">Contract</th>
+                                <th class="px-4 py-3">Type</th>
+                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3">Value</th>
+                                <th class="px-4 py-3">Risk Tier</th>
+                                <th class="px-6 py-3">Expiration</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60">
+                            ${contract_rows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Col: Expiry Radar & Quick Stats -->
+            <div class="space-y-6">
+                <!-- Expiry Alerts Card -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm">
+                    <h3 class="font-semibold text-white text-base mb-4 flex items-center">
+                        <i class="fa-solid fa-radar text-amber-400 mr-2"></i> Expiration Radar (90 Days)
+                    </h3>
+                    <div class="space-y-3">
+                        ${alert_items}
+                    </div>
+                </div>
+
+                <!-- Risk Posture Card -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm">
+                    <h3 class="font-semibold text-white text-base mb-4 flex items-center">
+                        <i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Risk Tier Composition
+                    </h3>
+                    <div class="space-y-2">
+                        ${risk_breakdown}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
