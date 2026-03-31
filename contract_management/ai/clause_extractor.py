@@ -35,7 +35,7 @@ class ClauseExtractor:
             r"governing law", r"jurisdiction", r"choice of law", r"venue", r"dispute resolution"
         ],
         ClauseType.TERMINATION: [
-            r"termination for cause", r"termination for convenience", r"right to terminate", r"notice of termination"
+            r"terminat(e|ion|ing)", r"right to cancel", r"notice of termination"
         ],
         ClauseType.PAYMENT_TERMS: [
             r"payment terms", r"fees and billing", r"invoic(e|ing)", r"net \d+", r"interest on late payments"
@@ -101,7 +101,7 @@ class ClauseExtractor:
                 risk = 25.0
 
         elif ctype == ClauseType.INDEMNIFICATION:
-            if "solely indemnify" in text_lower or "customer shall indemnify vendor against all claims" in text_lower:
+            if "solely indemnify" in text_lower or "customer shall indemnify" in text_lower or "provides no indemnity" in text_lower:
                 is_standard = False
                 risk = 80.0
                 explanation = "One-way indemnification with broad exposure."
@@ -110,7 +110,7 @@ class ClauseExtractor:
                 risk = 30.0
 
         elif ctype == ClauseType.TERMINATION:
-            if "sole discretion" in text_lower and "without notice" in text_lower:
+            if ("sole discretion" in text_lower and "without notice" in text_lower) or "terminate this contract at any time" in text_lower:
                 is_standard = False
                 risk = 85.0
                 explanation = "Immediate unilateral termination without cure period."
@@ -134,7 +134,6 @@ class ClauseExtractor:
             header_combined = f"{sec.title} {sec.content[:200]}"
             classification = self.classify_text(header_combined)
             if not classification:
-                # Try entire content if short
                 if len(sec.content) < 1500:
                     classification = self.classify_text(sec.content)
 

@@ -10,12 +10,12 @@ def test_api_health_check():
 def test_api_create_and_fetch_contract(memory_db):
     payload = {
         "title": "API Cloud Hosting",
-        "contract_number": "API-001",
+        "contract_number": "API-TEST-001",
         "counterparty_name": "HostWorks Inc",
         "total_value": 75000.0,
         "effective_date": "2026-01-01",
         "expiration_date": "2027-01-01"
     }
-    status, res = handle_api_request("POST", "/api/contracts", body=json.dumps(payload), db_path=":memory:")
+    status, res = handle_api_request("POST", "/api/contracts", body=json.dumps(payload), conn=memory_db)
     assert status == 201
-    assert res["contract"]["contract_number"] == "API-001"
+    assert res["contract"]["contract_number"] == "API-TEST-001"

@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 from contract_management.db.connection import get_db
 from contract_management.db.repositories.contract_repo import ContractRepository
 from contract_management.db.repositories.company_repo import CompanyRepository
@@ -8,7 +8,13 @@ from contract_management.lifecycle.state_machine import ContractStateMachine
 from contract_management.analytics.stats import PortfolioAnalytics
 from contract_management.models.contract import Contract, ContractStatus, ContractType
 
-def handle_api_request(method: str, path: str, body: Optional[str] = None, db_path=None) -> Tuple[int, Dict[str, Any]]:
+def handle_api_request(
+    method: str,
+    path: str,
+    body: Optional[str] = None,
+    db_path: Optional[str] = None,
+    conn=None
+) -> Tuple[int, Dict[str, Any]]:
     """
     Pure Python REST router handling API requests.
     Supports endpoints:
@@ -21,8 +27,10 @@ def handle_api_request(method: str, path: str, body: Optional[str] = None, db_pa
     GET  /api/expiry/scan
     """
     from contract_management.config import DATABASE_PATH
-    actual_db = db_path or DATABASE_PATH
-    conn = get_db(actual_db)
+    if conn is None:
+        actual_db = db_path or DATABASE_PATH
+        conn = get_db(actual_db)
+
     contract_repo = ContractRepository(conn)
     company_repo = CompanyRepository(conn)
 

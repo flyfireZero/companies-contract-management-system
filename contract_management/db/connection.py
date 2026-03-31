@@ -1,11 +1,11 @@
 import sqlite3
 import threading
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict
 from contract_management.config import DATABASE_PATH, BASE_DIR
 
 class DatabaseEngine:
-    _instance: Optional["DatabaseEngine"] = None
+    _instances: Dict[str, "DatabaseEngine"] = {}
     _lock = threading.Lock()
 
     def __init__(self, db_path: str = DATABASE_PATH):
@@ -18,9 +18,9 @@ class DatabaseEngine:
     @classmethod
     def get_instance(cls, db_path: str = DATABASE_PATH) -> "DatabaseEngine":
         with cls._lock:
-            if cls._instance is None:
-                cls._instance = cls(db_path)
-            return cls._instance
+            if db_path not in cls._instances:
+                cls._instances[db_path] = cls(db_path)
+            return cls._instances[db_path]
 
     def get_connection(self) -> sqlite3.Connection:
         if not hasattr(self._local, "conn") or self._local.conn is None:

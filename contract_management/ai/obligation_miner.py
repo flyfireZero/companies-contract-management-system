@@ -7,7 +7,9 @@ class ObligationMiner:
     Mines actionable obligations, payment deadlines, deliverable milestones, and audit requirements.
     """
 
-    DATE_PATTERN = re.compile(r'(?:\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d{4}-\d{2}-\d{2}|(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4})')
+    DATE_PATTERN = re.compile(
+        r'\b(?:\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d{4}-\d{2}-\d{2}|(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4})\b'
+    )
     NET_DAYS_PATTERN = re.compile(r'net\s+(\d{2,3})', re.IGNORECASE)
     DELIVERABLE_WORDS = [r"shall deliver", r"will provide", r"shall submit", r"is required to furnish"]
     AUDIT_WORDS = [r"annual audit", r"soc 2 audit report", r"inspection of records"]
@@ -21,7 +23,7 @@ class ObligationMiner:
 
             # 1. Payment Terms
             net_match = self.NET_DAYS_PATTERN.search(s_lower)
-            if ("payment" in s_lower or "invoice" in s_lower) and net_match:
+            if ("pay" in s_lower or "invoice" in s_lower) and net_match:
                 days = net_match.group(1)
                 obligations.append(Obligation(
                     contract_id=contract_id,

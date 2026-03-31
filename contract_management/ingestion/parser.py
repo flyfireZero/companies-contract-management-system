@@ -25,9 +25,7 @@ class DocumentParser:
     """
 
     SECTION_PATTERN = re.compile(
-        r'^(?:(?:Section|Article|Clause)\s+([0-9IVX]+(?:\.[0-9]+)*)[:.]?\s*([^
-]+)|([0-9]+(?:\.[0-9]+)*)\.?\s+([A-Z][^
-]+))$',
+        r'^(?:(?:Section|Article|Clause)\s+([0-9IVX]+(?:\.[0-9]+)*)[:.]?\s*([^\r\n]+)|([0-9]+(?:\.[0-9]+)*)\.?\s+([A-Z][^\r\n]+))$',
         re.MULTILINE
     )
 
@@ -35,7 +33,7 @@ class DocumentParser:
         lines = text.strip().splitlines()
         title = fallback_title
         if lines:
-            first_line = lines[0].strip("# 	*")
+            first_line = lines[0].strip("# \t*")
             if len(first_line) > 3:
                 title = first_line
 
@@ -43,9 +41,7 @@ class DocumentParser:
         matches = list(self.SECTION_PATTERN.finditer(text))
 
         if not matches:
-            # Fallback chunking by double newlines or standard headers
-            paragraphs = re.split(r'
-{2,}', text)
+            paragraphs = re.split(r'\n{2,}', text)
             current_offset = 0
             for i, p in enumerate(paragraphs):
                 p_clean = p.strip()
