@@ -110,9 +110,13 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
         filled = filled.replace("${risk_breakdown}", "\n".join(risk_html))
         return filled
 
-def run_server(port: int = 8080):
-    server = socketserver.TCPServer(("", port), DashboardHandler)
-    print(f"🚀 LexiContract AI Dashboard serving at http://localhost:{port}")
+class ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+def run_server(host: str = "0.0.0.0", port: int = 8080):
+    server = ReusableTCPServer((host, port), DashboardHandler)
+    display_host = "localhost" if host == "0.0.0.0" else host
+    print(f"🚀 LexiContract AI Dashboard serving at http://{display_host}:{port} (bound to {host}:{port})")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -120,4 +124,9 @@ def run_server(port: int = 8080):
         print("\nServer closed.")
 
 if __name__ == "__main__":
-    run_server()
+    import argparse
+    parser = argparse.ArgumentParser(description="LexiContract AI Web Server")
+    parser.add_argument("--host", default="0.0.0.0", help="Host interface to bind (default: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=8080, help="Port to listen on (default: 8080)")
+    args = parser.parse_args()
+    run_server(host=args.host, port=args.port)
